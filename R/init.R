@@ -14,4 +14,4 @@ library("rJava")
 .jaddClassPath("./Java/demetra-benchmarking-core-1.0.0-SNAPSHOT.jar")
 .jaddClassPath("./Java/demetra-benchmarking-r-1.0.0-SNAPSHOT.jar")
 
-jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
+jdbench_env <- new.env(parent = emptyenv())

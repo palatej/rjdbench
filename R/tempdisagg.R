@@ -1,5 +1,3 @@
-source("./R files/jd3_procresults.R")
-source("./R files/jd3_ts.R")
 
 if (! isClass("JD3_TemporalDisaggregation")){
   setClass(
@@ -10,7 +8,7 @@ if (! isClass("JD3_TemporalDisaggregation")){
 
 jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
                          model="Ar1", freq=4, conversion="Sum", conversion.obsposition=1, rho=0, rho.fixed=F, rho.truncated=0,
-                         diffuse.algorithm="Diffuse", diffuse.zeroinitialization=F, diffuse.regressors=F){
+                         diffuse.algorithm="SqrtDiffuse", diffuse.zeroinitialization=F, diffuse.regressors=F){
   jseries=ts_r2jd(series)
   jlist<-list()
   if (!is.null(indicators)){
@@ -22,8 +20,7 @@ jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
     jindicators<-.jnull("[Ldemetra/timeseries/TsData;")
   }
   jrslt<-.jcall("demetra/benchmarking/r/TemporalDisaggregation", "Ldemetra/benchmarking/r/TemporalDisaggregation$Results;",
-                 "process", jseries, constant, trend, jindicators, model, as.integer(freq), conversion, as.integer(conversion.obsposition),
-                 rho, rho.fixed, rho.truncated,
+                 "process", jseries, constant, trend, jindicators, model, as.integer(freq), conversion, as.integer(conversion.obsposition),rho, rho.fixed, rho.truncated,
                  diffuse.algorithm, diffuse.zeroinitialization, diffuse.regressors)
   return (new (Class = "JD3_TemporalDisaggregation", internal = jrslt))
 }

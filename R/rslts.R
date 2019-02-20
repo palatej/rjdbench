@@ -1,7 +1,6 @@
-source("./R files/jd3_init.R")
-source("./R files/jd3_ts.R")
 
 proc_numeric<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (!is.jnull(s))
     .jcall(s, "D", "doubleValue")
@@ -10,6 +9,7 @@ proc_numeric<-function(rslt, name){
 }
 
 proc_vector<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -17,6 +17,7 @@ proc_vector<-function(rslt, name){
 }
 
 proc_int<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(-1)
@@ -24,6 +25,7 @@ proc_int<-function(rslt, name){
 }
 
 proc_bool<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(FALSE)
@@ -31,6 +33,7 @@ proc_bool<-function(rslt, name){
 }
 
 proc_ts<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return (NULL)
@@ -41,6 +44,7 @@ proc_ts<-function(rslt, name){
 }
 
 proc_period<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -48,6 +52,7 @@ proc_period<-function(rslt, name){
 }
 
 proc_str<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -55,6 +60,7 @@ proc_str<-function(rslt, name){
 }
 
 proc_desc<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -62,6 +68,7 @@ proc_desc<-function(rslt, name){
 }
 
 proc_test<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -74,6 +81,7 @@ proc_test<-function(rslt, name){
 }
 
 proc_parameter<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -83,6 +91,7 @@ proc_parameter<-function(rslt, name){
 }
 
 proc_parameters<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   jd_p<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(jd_p))
     return(NULL)
@@ -97,6 +106,7 @@ proc_parameters<-function(rslt, name){
 }
 
 proc_reg<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -110,6 +120,7 @@ proc_reg<-function(rslt, name){
 }
 
 proc_matrix<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return(NULL)
@@ -117,6 +128,7 @@ proc_matrix<-function(rslt, name){
 }
 
 proc_data<-function(rslt, name){
+  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
   s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
   if (is.jnull(s))
     return (NULL)

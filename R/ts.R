@@ -1,4 +1,3 @@
-source("./R files/jd3_init.R")
 
 ts_r2jd<-function(s){
   if (is.null(s)){
@@ -6,12 +5,12 @@ ts_r2jd<-function(s){
   }
   freq<-frequency(s)
   start<-start(s)
-  .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "of", 
+  .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "of",
          as.integer(freq), as.integer(start[1]), as.integer(start[2]), as.double(s))
   }
 
 tsdomain_r2jd<-function(period, startYear, startPeriod, length){
-  .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsDomain;", "of", 
+  .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsDomain;", "of",
          as.integer(period), as.integer(startYear), as.integer(startPeriod), as.integer(length))
 }
 
@@ -51,8 +50,8 @@ jd3_aggregate<-function(s, nfreq=1, conversion="Sum", complete=TRUE){
     return (NULL)
   }
   jd_s<-ts_r2jd(s)
-  jd_agg<-.jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "aggregate", jd_s, 
-               as.integer(nfreq), conversion, complete); 
+  jd_agg<-.jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "aggregate", jd_s,
+               as.integer(nfreq), conversion, complete);
   if (is.null(jd_agg)){
     return (NULL);
   }

@@ -1,0 +1,7 @@
+export(jd3_denton)
+export(jd3_cholette)
+export(jd3_tempdisagg)
+export(jd3_aggregate)
+export(jd3_result)
+export(jd3_dictionary)
+import(rJava)

@@ -1,4 +1,3 @@
-source("./R files/jd3_rslts.R")
 
 if (! isClass("JD3_Object")){
   setClass(
@@ -23,7 +22,7 @@ if (! isGeneric("result" )){
     }else{
       proc_data(object@internal, id)}
   })
-  lockBinding("result", .GlobalEnv)
+#  lockBinding("result", .GlobalEnv)
 }
 
 if (!isGeneric("dictionary")){
@@ -34,8 +33,22 @@ if (!isGeneric("dictionary")){
     }else{
       proc_dictionary(.jclass(object@internal))
     }
-    
+
   })
-  
-  lockBinding("dictionary", .GlobalEnv)
+
+#  lockBinding("dictionary", .GlobalEnv)
+}
+
+jd3_result<-function(object, id){
+  if (is.null(jdbench_env$jd_clobj)){
+    jdbench_env$jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
+
+  }
+  return (result(object, id))
+}
+
+
+
+jd3_dictionary<-function(object){
+  return (dictionary(object))
 }
