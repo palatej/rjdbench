@@ -1,7 +1,6 @@
 
 proc_numeric<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (!is.jnull(s))
     .jcall(s, "D", "doubleValue")
   else
@@ -9,32 +8,28 @@ proc_numeric<-function(rslt, name){
 }
 
 proc_vector<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   .jevalArray(s)
 }
 
 proc_int<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(-1)
   .jcall(s, "I", "intValue")
 }
 
 proc_bool<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(FALSE)
   .jcall(s, "Z", "booleanValue")
 }
 
 proc_ts<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return (NULL)
   if (.jinstanceof(s, "demetra/timeseries/TsData"))
@@ -44,32 +39,28 @@ proc_ts<-function(rslt, name){
 }
 
 proc_period<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   period_jd2r(s)
 }
 
 proc_str<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   .jcall(s, "S", "toString")
 }
 
 proc_desc<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   .jevalArray(s)
 }
 
 proc_test<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   desc<-.jcall(s, "S", "getDescription")
@@ -81,8 +72,7 @@ proc_test<-function(rslt, name){
 }
 
 proc_parameter<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   val<-.jcall(s, "D", "getValue")
@@ -91,8 +81,7 @@ proc_parameter<-function(rslt, name){
 }
 
 proc_parameters<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  jd_p<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  jd_p<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(jd_p))
     return(NULL)
   p<-.jcastToArray(jd_p)
@@ -106,8 +95,7 @@ proc_parameters<-function(rslt, name){
 }
 
 proc_reg<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   desc<-.jfield(s, "S", "description")
@@ -120,16 +108,14 @@ proc_reg<-function(rslt, name){
 }
 
 proc_matrix<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return(NULL)
   return (matrix_jd2r(s))
 }
 
 proc_data<-function(rslt, name){
-  jd_clobj <- .jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jd_clobj)
+  s<-.jcall(rslt, "Ljava/lang/Object;", "getData", name, jdbench_env$jd_clobj)
   if (is.jnull(s))
     return (NULL)
   if (.jinstanceof(s, "demetra/timeseries/TsData"))

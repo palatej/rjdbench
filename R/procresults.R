@@ -20,7 +20,10 @@ if (! isGeneric("result" )){
     if (is.null(object@internal)){
       NULL
     }else{
-      proc_data(object@internal, id)}
+      if (is.null(jdbench_env$jd_clobj)){
+        jdbench_env$jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
+      }
+    proc_data(object@internal, id)}
   })
 #  lockBinding("result", .GlobalEnv)
 }
@@ -39,16 +42,16 @@ if (!isGeneric("dictionary")){
 #  lockBinding("dictionary", .GlobalEnv)
 }
 
-jd3_result<-function(object, id){
-  if (is.null(jdbench_env$jd_clobj)){
-    jdbench_env$jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
+#jd3_result<-function(object, id){
+#  if (is.null(jdbench_env$jd_clobj)){
+#    jdbench_env$jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
+#
+#  }
+#  return (result(object, id))
+#}
 
-  }
-  return (result(object, id))
-}
 
 
-
-jd3_dictionary<-function(object){
-  return (dictionary(object))
-}
+#jd3_dictionary<-function(object){
+#  return (dictionary(object))
+#}
