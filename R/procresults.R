@@ -16,21 +16,39 @@ if (! isClass("JD3_ProcResults")){
 
 if (! isGeneric("result" )){
   setGeneric(name="result", def = function( object, id, ... ){standardGeneric("result")})
+}
+
+#' Title
+#'
+#' @param object JD3_ProcResults.
+#' @param id character.
+#'
+#' @return
+#' @export
+#'
+#' @examples
   setMethod("result", signature = c(object="JD3_ProcResults", id="character"), function(object, id){
     if (is.null(object@internal)){
-      NULL
+      return (NULL)
     }else{
-      if (is.null(jdbench_env$jd_clobj)){
-        jdbench_env$jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-      }
-    proc_data(object@internal, id)}
+      return (proc_data(object@internal, id))
+    }
   })
-#  lockBinding("result", .GlobalEnv)
-}
+  #  lockBinding("result", .GlobalEnv)
+
 
 if (!isGeneric("dictionary")){
   setGeneric(name="dictionary", def = function( object, ... ){standardGeneric("dictionary")})
-  setMethod("dictionary", "JD3_ProcResults", function(object){
+}
+#' Title
+#'
+#' @param JD3_ProcResults
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setMethod("dictionary", "JD3_ProcResults", function(object){
     if (is.null(object@internal)){
       NULL
     }else{
@@ -39,19 +57,3 @@ if (!isGeneric("dictionary")){
 
   })
 
-#  lockBinding("dictionary", .GlobalEnv)
-}
-
-#jd3_result<-function(object, id){
-#  if (is.null(jdbench_env$jd_clobj)){
-#    jdbench_env$jd_clobj<-.jcall("java/lang/Class", "Ljava/lang/Class;", "forName", "java.lang.Object")
-#
-#  }
-#  return (result(object, id))
-#}
-
-
-
-#jd3_dictionary<-function(object){
-#  return (dictionary(object))
-#}

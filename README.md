@@ -1,2 +1,4 @@
 # rjdbench
-Benchmarking and temporal disaggregation with JD+ 3.0
+
+Benchmarking, temporal disaggregation and calendarization
+

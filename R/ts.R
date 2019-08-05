@@ -1,4 +1,3 @@
-
 ts_r2jd<-function(s){
   if (is.null(s)){
     return (NULL)
@@ -7,7 +6,7 @@ ts_r2jd<-function(s){
   start<-start(s)
   .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "of",
          as.integer(freq), as.integer(start[1]), as.integer(start[2]), as.double(s))
-  }
+}
 
 tsdomain_r2jd<-function(period, startYear, startPeriod, length){
   .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsDomain;", "of",
@@ -20,7 +19,7 @@ ts_jd2r<-function(s){
     return (NULL)
   }
   pstart<-.jcall("demetra/timeseries/r/TsUtility", "[I", "startPeriod", s)
-  jx<-.jcall(s, "Ldemetra/data/DoubleSequence;", "getValues")
+  jx<-.jcall(s, "Ldemetra/data/DoubleSeq;", "getValues")
   x<-.jcall(jx, "[D", "toArray")
   ts(x,start=pstart[2:3], frequency=pstart[1])
 }
@@ -42,16 +41,23 @@ matrix_r2jd<-function(s){
     s<-matrix(s, nrow=length(s), ncol=1)
   }
   sdim<-dim(s)
-  return (.jcall("demetra/maths/MatrixType","Ldemetra/maths/MatrixType;", "ofInternal", as.double(s), as.integer(sdim[1]), as.integer(sdim[2])))
+  return (.jcall("demetra/maths/matrices/Matrix","Ldemetra/maths/matrices/Matrix;", "ofInternal", as.double(s), as.integer(sdim[1]), as.integer(sdim[2])))
 }
 
+#' @param s
+#'
+#' @param nfreq
+#' @param conversion
+#' @param complete
+#'
+#' @export
 jd3_aggregate<-function(s, nfreq=1, conversion="Sum", complete=TRUE){
   if (is.null(s)){
     return (NULL)
   }
   jd_s<-ts_r2jd(s)
   jd_agg<-.jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "aggregate", jd_s,
-               as.integer(nfreq), conversion, complete);
+                 as.integer(nfreq), conversion, complete);
   if (is.null(jd_agg)){
     return (NULL);
   }
@@ -59,3 +65,4 @@ jd3_aggregate<-function(s, nfreq=1, conversion="Sum", complete=TRUE){
     return (ts_jd2r(jd_agg))
   }
 }
+
