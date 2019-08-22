@@ -18,7 +18,9 @@ jd3_denton<-function(s, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum"){
   ts_jd2r(jd_rslt)
 }
 
-#' Benchmarking by means of the Cholette method.
+#' @title Cholette method
+#'
+#' @description Benchmarking by means of the Cholette method.
 #'
 #' @param s Disaggregated series. Mandatory
 #' @param t Aggregation constraint. Mandatory
@@ -27,7 +29,12 @@ jd3_denton<-function(s, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum"){
 #' @param bias
 #' @param conversion
 #'
+#' @details
+#' \deqn{\sum_{i,t}\left(\left(\frac{{x_{i,t}-z}_{i,t}}{\left|z_{i,t}\right|^\lambda}\right)-\rho\left(\frac{{x_{i,t-1}-z}_{i,t-1}}{\left|z_{i,t-1}\right|^\lambda}\right)\right)^2}
+#'
 #' @export
+#'
+#'
 jd3_cholette<-function(s, t, rho=1, lambda=1, bias="None", conversion="Sum"){
   jd_s<-ts_r2jd(s)
   jd_t<-ts_r2jd(t)
