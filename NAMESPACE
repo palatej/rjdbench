@@ -2,7 +2,11 @@
 
 export(jd3_aggregate)
 export(jd3_cholette)
+export(jd3_cubicspline)
+export(jd3_cubicspline2)
 export(jd3_denton)
+export(jd3_denton2)
+export(jd3_grp)
 export(jd3_mcholette)
 export(jd3_tempdisagg)
 exportMethods(coef)

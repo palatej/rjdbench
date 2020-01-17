@@ -6,17 +6,98 @@
 #' @param mul Multiplicative or additive benchmarking. Multiplicative by default
 #' @param modified Modified (TRUE) or unmodified (FALSE) Denton. Modified by default
 #' @param conversion Conversion rule. Should be "Sum" or "Average". Sum by default.
-#'
+#' @param obsposition Postion of the observation in the aggregated period (only used with "UserDefined" conversion)
 #' @return The benchmarked series is returned
 #'
 #' @export
-jd3_denton<-function(s, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum"){
+jd3_denton<-function(s, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum", obsposition=1){
   jd_s<-ts_r2jd(s)
   jd_t<-ts_r2jd(t)
   jd_rslt<-.jcall("demetra/benchmarking/r/Benchmarking", "Ldemetra/timeseries/TsData;", "denton"
-                  ,jd_s, jd_t, as.integer(d), mul, modified, conversion)
+                  ,jd_s, jd_t, as.integer(d), mul, modified, conversion, as.integer(obsposition))
   ts_jd2r(jd_rslt)
 }
+
+#' Benchmarking by means of the Denton method without indicator
+#'
+#'
+#' @param nfreq
+#' @param t Aggregation constraint. Mandatory
+#' @param d Differencing order. 1 by default
+#' @param mul Multiplicative or additive benchmarking. Multiplicative by default
+#' @param modified Modified (TRUE) or unmodified (FALSE) Denton. Modified by default
+#' @param conversion Conversion rule. Should be "Sum" or "Average". Sum by default.
+#' @param obsposition Postion of the observation in the aggregated period (only used with "UserDefined" conversion)
+#'
+#' @return The benchmarked series is returned
+#' @export
+#'
+#' @examples
+jd3_denton2<-function(nfreq, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum", obsposition=1){
+  jd_t<-ts_r2jd(t)
+  jd_rslt<-.jcall("demetra/benchmarking/r/Benchmarking", "Ldemetra/timeseries/TsData;", "denton"
+                  ,as.integer(nfreq), jd_t, as.integer(d), mul, modified, conversion, as.integer(obsposition))
+  ts_jd2r(jd_rslt)
+}
+
+#' Benchmarking following the growth rate preservation principle.
+#' This method corresponds to the method of Cauley and Trager, using the solution
+#' proposed by Di Fonzo and Marini.
+#'
+#' @param s
+#' @param t
+#' @param conversion
+#' @param obsposition Postion of the observation in the aggregated period (only used with "UserDefined" conversion)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+jd3_grp<-function(s, t, conversion="Sum", obsposition=1, eps=1e-12, iter=500, denton=T){
+  jd_s<-ts_r2jd(s)
+  jd_t<-ts_r2jd(t)
+  jd_rslt<-.jcall("demetra/benchmarking/r/Benchmarking", "Ldemetra/timeseries/TsData;", "grp"
+                  ,jd_s, jd_t, conversion, as.integer(obsposition), eps, as.integer(iter), as.logical(denton))
+  ts_jd2r(jd_rslt)
+}
+
+#' Title
+#'
+#' @param s
+#' @param t
+#' @param conversion
+#' @param obsposition Postion of the observation in the aggregated period (only used with "UserDefined" conversion)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+jd3_cubicspline<-function(s, t, conversion="Sum", obsposition=1){
+  jd_s<-ts_r2jd(s)
+  jd_t<-ts_r2jd(t)
+  jd_rslt<-.jcall("demetra/benchmarking/r/Benchmarking", "Ldemetra/timeseries/TsData;", "cubicSpline"
+                  ,jd_s, jd_t, conversion, as.integer(obsposition))
+  ts_jd2r(jd_rslt)
+}
+
+#' Title
+#'
+#' @param nfreq
+#' @param t
+#' @param conversion
+#' @param obsposition Postion of the observation in the aggregated period (only used with "UserDefined" conversion)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+jd3_cubicspline2<-function(nfreq, t, conversion="Sum", obsposition=1){
+  jd_t<-ts_r2jd(t)
+  jd_rslt<-.jcall("demetra/benchmarking/r/Benchmarking", "Ldemetra/timeseries/TsData;", "cubicSpline"
+                  ,as.integer(nfreq), jd_t, conversion, as.integer(obsposition))
+  ts_jd2r(jd_rslt)
+}
+
 
 #' @title Cholette method
 #'
@@ -28,6 +109,7 @@ jd3_denton<-function(s, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum"){
 #' @param lambda
 #' @param bias
 #' @param conversion
+#' @param obsposition Postion of the observation in the aggregated period (only used with "UserDefined" conversion)
 #'
 #' @details
 #' \deqn{\sum_{i,t}\left(\left(\frac{{x_{i,t}-z}_{i,t}}{\left|z_{i,t}\right|^\lambda}\right)-\rho\left(\frac{{x_{i,t-1}-z}_{i,t-1}}{\left|z_{i,t-1}\right|^\lambda}\right)\right)^2}
@@ -35,11 +117,11 @@ jd3_denton<-function(s, t, d=1, mul=TRUE, modified=TRUE, conversion="Sum"){
 #' @export
 #'
 #'
-jd3_cholette<-function(s, t, rho=1, lambda=1, bias="None", conversion="Sum"){
+jd3_cholette<-function(s, t, rho=1, lambda=1, bias="None", conversion="Sum", obsposition=1){
   jd_s<-ts_r2jd(s)
   jd_t<-ts_r2jd(t)
   jd_rslt<-.jcall("demetra/benchmarking/r/Benchmarking", "Ldemetra/timeseries/TsData;", "cholette"
-                  ,jd_s, jd_t, rho, lambda, bias, conversion)
+                  ,jd_s, jd_t, rho, lambda, bias, conversion, as.integer(obsposition))
   ts_jd2r(jd_rslt)
 }
 

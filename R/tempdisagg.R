@@ -44,7 +44,7 @@ jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
   }else{
     jindicators<-.jnull("[Ldemetra/timeseries/TsData;")
   }
-  jrslt<-.jcall("demetra/benchmarking/r/TemporalDisaggregation", "Ldemetra/tempdisagg/univariate/TemporalDisaggregationResults;",
+  jrslt<-.jcall("demetra/benchmarking/r/TemporalDisaggregation", "Ldemetra/benchmarking/r/TemporalDisaggregation$Results;",
                 "process", jseries, constant, trend, jindicators, model, as.integer(freq), conversion, as.integer(conversion.obsposition),rho, rho.fixed, rho.truncated,
                 zeroinitialization, diffuse.algorithm, diffuse.regressors)
   return (new (Class = "JD3_TemporalDisaggregation", internal = jrslt))
@@ -166,7 +166,7 @@ setMethod("summary", "JD3_TemporalDisaggregation",
                 }
                 dim(modelMatrix)<-c(nx, 3)
 
-                colnames(modelMatrix)<-c("Coefficients","T-Stat","P[|T|>t]")
+                colnames(modelMatrix)<-c("Coefficients","T-stat","P[|T|>t]")
                 rownames(modelMatrix)<-paste("var-",1:nx, sep="")
                 show(modelMatrix)
               }
