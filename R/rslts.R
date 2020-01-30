@@ -76,7 +76,7 @@ proc_parameter<-function(rslt, name){
   if (is.jnull(s))
     return(NULL)
   val<-.jcall(s, "D", "getValue")
-  e<-.jcall(s, "D", "getStde")
+  e<-.jcall(s, "D", "getStandardError")
   c(val, e)
 }
 
@@ -89,7 +89,7 @@ proc_parameters<-function(rslt, name){
   all<-array(0, dim=c(len,2))
   for (i in 1:len){
     all[i, 1]<-.jcall(p[[i]], "D", "getValue")
-    all[i, 2]<-.jcall(p[[i]], "D", "getStde")
+    all[i, 2]<-.jcall(p[[i]], "D", "getStandardError")
   }
   all
 }
@@ -124,26 +124,21 @@ proc_data<-function(rslt, name){
     return (.jcall(s, "D", "doubleValue"))
   else if (.jinstanceof(s, "demetra/math/matrices/MatrixType"))
     return(matrix_jd2r(.jcast(s,"demetra/math/matrices/MatrixType")))
-  else if (.jinstanceof(s, "demetra/data/ParameterSpec")){
-    val<-.jcall(s, "D", "getValue")
-    e<-.jcall(s, "D", "getStde")
-    return (c(val, e))
-  }
-  else if (.jinstanceof(s, "[Ldemetra/data/ParameterSpec;")){
+  else if (.jinstanceof(s, "[Ldemetra/data/ParameterEstimation;")){
     p<-.jcastToArray(s)
     len<-length(p)
     all<-array(0, dim=c(len,2))
     for (i in 1:len){
       all[i, 1]<-.jcall(p[[i]], "D", "getValue")
-      all[i, 2]<-.jcall(p[[i]], "D", "getStde")
+      all[i, 2]<-.jcall(p[[i]], "D", "getStandardError")
     }
     return (all)
   }
-  else if (.jinstanceof(s, "demetra/linearmodel/Coefficient")){
+  else if (.jinstanceof(s, "demetra/data/ParameterEstimation")){
     desc<-.jcall(s, "S", "getDescription")
     val<-.jcall(s, "D", "getValue")
-    e<-.jcall(s, "D", "getStdError")
-    p<-.jcall(s, "D", "getPValue")
+    e<-.jcall(s, "D", "getStandardError")
+    p<-.jcall(s, "D", "getPvalue")
     all<-c(val, e, p)
     attr(all, "name")<-desc
     return (all)

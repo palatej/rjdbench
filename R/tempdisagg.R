@@ -50,6 +50,33 @@ jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
   return (new (Class = "JD3_TemporalDisaggregation", internal = jrslt))
 }
 
+#' Title
+#'
+#' @param series
+#' @param indicator
+#' @param model
+#' @param conversion
+#' @param conversion.obsposition
+#' @param rho
+#' @param rho.fixed
+#' @param rho.truncated
+#'
+#' @return
+#' @export
+#'
+#' @examples
+jd3_tempdisagg2<-function(series, indicator, model=c("Ar1", "Rw"),
+                         conversion=c("Sum", "Average", "Last", "First", "UserDefined"), conversion.obsposition=1,
+                         rho=0, rho.fixed=F, rho.truncated=0){
+  model=match.arg(model)
+  conversion=match.arg(conversion)
+  jseries=ts_r2jd(series)
+  jlist<-list()
+  jindicator<-ts_r2jd(indicator)
+  jrslt<-.jcall("demetra/benchmarking/r/TemporalDisaggregation", "Ldemetra/timeseries/TsData;",
+                "processI", jseries, jindicator, model, conversion, as.integer(conversion.obsposition),rho, rho.fixed, rho.truncated)
+  return (ts_jd2r(jrslt))
+}
 
 #' Log-likelihood and linked statistics
 #'

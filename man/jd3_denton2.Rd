@@ -5,7 +5,7 @@
 \title{Benchmarking by means of the Denton method without indicator}
 \usage{
 jd3_denton2(nfreq, t, d = 1, mul = TRUE, modified = TRUE,
-  conversion = "Sum")
+  conversion = "Sum", obsposition = 1)
 }
 \arguments{
 \item{t}{Aggregation constraint. Mandatory}
@@ -17,6 +17,8 @@ jd3_denton2(nfreq, t, d = 1, mul = TRUE, modified = TRUE,
 \item{modified}{Modified (TRUE) or unmodified (FALSE) Denton. Modified by default}
 
 \item{conversion}{Conversion rule. Should be "Sum" or "Average". Sum by default.}
+
+\item{obsposition}{Postion of the observation in the aggregated period (only used with "UserDefined" conversion)}
 }
 \value{
 The benchmarked series is returned

@@ -6,11 +6,11 @@
 This method corresponds to the method of Cauley and Trager, using the solution
 proposed by Di Fonzo and Marini.}
 \usage{
-jd3_grp(s, t, conversion = "Sum", eps = 1e-12, iter = 500,
-  denton = T)
+jd3_grp(s, t, conversion = "Sum", obsposition = 1, eps = 1e-12,
+  iter = 500, denton = T)
 }
 \arguments{
-\item{conversion}{}
+\item{obsposition}{Postion of the observation in the aggregated period (only used with "UserDefined" conversion)}
 }
 \description{
 Benchmarking following the growth rate preservation principle.

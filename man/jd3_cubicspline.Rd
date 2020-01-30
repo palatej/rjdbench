@@ -4,10 +4,10 @@
 \alias{jd3_cubicspline}
 \title{Title}
 \usage{
-jd3_cubicspline(s, t, conversion = "Last", obsposition = 0)
+jd3_cubicspline(s, t, conversion = "Sum", obsposition = 1)
 }
 \arguments{
-\item{obsposition}{}
+\item{obsposition}{Postion of the observation in the aggregated period (only used with "UserDefined" conversion)}
 }
 \description{
 Title

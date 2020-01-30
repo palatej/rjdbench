@@ -5,14 +5,14 @@
 \title{Cholette method}
 \usage{
 jd3_cholette(s, t, rho = 1, lambda = 1, bias = "None",
-  conversion = "Sum")
+  conversion = "Sum", obsposition = 1)
 }
 \arguments{
 \item{s}{Disaggregated series. Mandatory}
 
 \item{t}{Aggregation constraint. Mandatory}
 
-\item{conversion}{}
+\item{obsposition}{Postion of the observation in the aggregated period (only used with "UserDefined" conversion)}
 }
 \description{
 Benchmarking by means of the Cholette method.
