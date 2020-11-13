@@ -4,8 +4,15 @@
 \alias{jd3_denton}
 \title{Benchmarking by means of the Denton method.}
 \usage{
-jd3_denton(s, t, d = 1, mul = TRUE, modified = TRUE,
-  conversion = "Sum", obsposition = 1)
+jd3_denton(
+  s,
+  t,
+  d = 1,
+  mul = TRUE,
+  modified = TRUE,
+  conversion = "Sum",
+  obsposition = 1
+)
 }
 \arguments{
 \item{s}{Disaggregated series. Mandatory}

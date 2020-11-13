@@ -4,8 +4,15 @@
 \alias{jd3_cholette}
 \title{Cholette method}
 \usage{
-jd3_cholette(s, t, rho = 1, lambda = 1, bias = "None",
-  conversion = "Sum", obsposition = 1)
+jd3_cholette(
+  s,
+  t,
+  rho = 1,
+  lambda = 1,
+  bias = "None",
+  conversion = "Sum",
+  obsposition = 1
+)
 }
 \arguments{
 \item{s}{Disaggregated series. Mandatory}

@@ -4,13 +4,22 @@
 \alias{jd3_tempdisagg2}
 \title{Title}
 \usage{
-jd3_tempdisagg2(series, indicator, model = c("Ar1", "Rw"),
+jd3_tempdisagg2(
+  series,
+  indicator,
+  model = c("Ar1", "Rw"),
   conversion = c("Sum", "Average", "Last", "First", "UserDefined"),
-  conversion.obsposition = 1, rho = 0, rho.fixed = F,
-  rho.truncated = 0)
+  conversion.obsposition = 1,
+  rho = 0,
+  rho.fixed = F,
+  rho.truncated = 0
+)
 }
 \arguments{
 \item{rho.truncated}{}
+}
+\value{
+
 }
 \description{
 Title

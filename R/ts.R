@@ -1,3 +1,6 @@
+#' @import rJava
+NULL
+
 ts_r2jd<-function(s){
   if (is.null(s)){
     return (NULL)
@@ -5,7 +8,7 @@ ts_r2jd<-function(s){
   freq<-frequency(s)
   start<-start(s)
   .jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "of",
-         as.integer(freq), as.integer(start[1]), as.integer(start[2]), as.double(s))
+         as.integer(freq), as.integer(start[1]), as.integer(start[2]), as.numeric(s))
 }
 
 tsdomain_r2jd<-function(period, startYear, startPeriod, length){
@@ -36,28 +39,31 @@ matrix_jd2r<-function(s){
 
 matrix_r2jd<-function(s){
   if (is.null(s))
-    return (.jnull("demetra/math/MatrixType"))
+    return (.jnull("demetra/math/matrices/MatrixType"))
   if (!is.matrix(s)){
     s<-matrix(s, nrow=length(s), ncol=1)
   }
   sdim<-dim(s)
-  return (.jcall("demetra/math/matrices/MatrixType","Ldemetra/math/matrices/MatrixType;", "ofInternal", as.double(s), as.integer(sdim[1]), as.integer(sdim[2])))
+  return (.jcall("demetra/math/matrices/MatrixType","Ldemetra/math/matrices/MatrixType;", "of", as.double(s), as.integer(sdim[1]), as.integer(sdim[2])))
 }
 
-#' @param s
+#' Aggregation of time series
 #'
+#' @param s
 #' @param nfreq
 #' @param conversion
 #' @param complete
 #'
+#' @return
 #' @export
-jd3_aggregate<-function(s, nfreq=1, conversion="Sum", complete=TRUE){
+#'
+#' @examples
+aggregate<-function(s, nfreq=1, conversion="Sum", complete=TRUE){
   if (is.null(s)){
     return (NULL)
   }
   jd_s<-ts_r2jd(s)
-  jd_agg<-.jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "aggregate", jd_s,
-                 as.integer(nfreq), conversion, complete);
+  jd_agg<-.jcall("demetra/timeseries/r/TsUtility", "Ldemetra/timeseries/TsData;", "aggregate", jd_s, as.integer(nfreq), conversion, complete)
   if (is.null(jd_agg)){
     return (NULL);
   }

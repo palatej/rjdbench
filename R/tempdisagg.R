@@ -1,28 +1,30 @@
+#' @include rslts.R
+NULL
 
-if (! isClass("JD3_TemporalDisaggregation")){
-  setClass(
-    Class="JD3_TemporalDisaggregation",
-    contains = "JD3_ProcResults"
-  )
-}
 
-#' @param series
+#' Title
 #'
-#' @param constant
-#' @param trend
-#' @param indicators
-#' @param model
-#' @param freq
-#' @param conversion
-#' @param conversion.obsposition
-#' @param rho
-#' @param rho.fixed
-#' @param rho.truncated
-#' @param zeroinitialization
-#' @param diffuse.algorithm
-#' @param diffuse.regressors
+#' Temporal disaggregation of a time series
 #'
+#' @param series The time series taht will be disaggregated
+#' @param constant Constant term (T/F)
+#' @param trend Linear trend (T/F)
+#' @param indicators High-frequency indicator used in the temporal disaggregation
+#' @param model Model of the error term (at the disaggregated level). "Ar1" = Chow-Lin, "Rw" = Fernandez, "RwAr1" = Litterman
+#' @param freq Annual frequency of the disaggregated variable. Used if no indicator is provided
+#' @param conversion Conversion mode (Usually "Sum" or "Average")
+#' @param conversion.obsposition Only used with "UserDefined" mode. Position of the observed indicator in the aggregated periods (for instance 7th month of the year)
+#' @param rho Only used with Ar1/RwAr1 models. Initial value of the parameter
+#' @param rho.fixed Fixed rho (T/F)
+#' @param rho.truncated Range for Rho evaluation (in [rho.truncated, 1[)
+#' @param zeroinitialization Initial values of auto-regressive models are fixed to 0
+#' @param diffuse.algorithm Algorithm used for diffuse initialization
+#' @param diffuse.regressors Indicates if the coefficients of the regression model are diffuse (T) or fixed unknown (F, default)
+#'
+#' @return
 #' @export
+#'
+#' @examples
 jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
                          model=c("Ar1", "Rw", "RwAr1"), freq=4,
                          conversion=c("Sum", "Average", "Last", "First", "UserDefined"), conversion.obsposition=1,
@@ -34,11 +36,17 @@ jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
   if (model!="Ar1" && !zeroinitialization){
     constant=F
   }
-  jseries=ts_r2jd(series)
+  jseries<-ts_r2jd(series)
   jlist<-list()
   if (!is.null(indicators)){
-    for (i in 1:length(indicators)){
-      jlist[[i]]<-ts_r2jd(indicators[[i]])
+    if (is.list(indicators)){
+      for (i in 1:length(indicators)){
+        jlist[[i]]<-ts_r2jd(indicators[[i]])
+      }
+    }else if (is.ts(indicators)){
+      jlist[[1]]<-ts_r2jd(indicators)
+    }else{
+      stop("Invalid indicators")
     }
     jindicators<-.jarray(jlist, contents.class = "demetra/timeseries/TsData")
   }else{
@@ -47,7 +55,41 @@ jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
   jrslt<-.jcall("demetra/benchmarking/r/TemporalDisaggregation", "Ldemetra/benchmarking/r/TemporalDisaggregation$Results;",
                 "process", jseries, constant, trend, jindicators, model, as.integer(freq), conversion, as.integer(conversion.obsposition),rho, rho.fixed, rho.truncated,
                 zeroinitialization, diffuse.algorithm, diffuse.regressors)
-  return (new (Class = "JD3_TemporalDisaggregation", internal = jrslt))
+
+  # Build the S3 result
+  bcov<-proc_matrix(jrslt, "covar")
+  vars<-proc_vector(jrslt, "regnames")
+  coef<-proc_vector(jrslt, "coeff")
+  se<-sqrt(diag(bcov))
+  t<-coef/se
+  m<-data.frame(coef, se, t)
+  m<-`row.names<-`(m, vars)
+
+  regression<-list(
+    type=model,
+    conversion=conversion,
+    model=m,
+    cov=bcov
+  )
+  estimation<-list(
+    disagg=proc_ts(jrslt, "disagg"),
+    edisagg=proc_ts(jrslt, "edisagg"),
+    regeffect=proc_ts(jrslt, "regeffect"),
+    smoothingpart=proc_numeric(jrslt, "smoothingpart"),
+    parameter=proc_numeric(jrslt, "parameter"),
+    eparameter=proc_numeric(jrslt, "eparameter")
+    # res= TODO
+  )
+  likelihood<-proc_likelihood(jrslt, "likelihood.")
+
+  return(structure(list(
+    regression=regression,
+    estimation=estimation,
+    likelihood=likelihood),
+    class="JDTempDisagg"))
+
+
+
 }
 
 #' Title
@@ -78,129 +120,120 @@ jd3_tempdisagg2<-function(series, indicator, model=c("Ar1", "Rw"),
   return (ts_jd2r(jrslt))
 }
 
-#' Log-likelihood and linked statistics
+#' Title
 #'
-#' @param JD3_TemporalDisaggregation
+#' @param object
 #'
 #' @return
 #' @export
 #'
 #' @examples
-setMethod("logLik", "JD3_TemporalDisaggregation", function(object){
+logLik.JDTempDisagg<-function(object){
   if (is.null(object@internal)){
     NaN
   }else{
     proc_numeric(object@internal, "likelihood.ll")}
-})
+}
 
-#' Coefficients of the regression model
+#' Title
 #'
-#' @param JD3_TemporalDisaggregation
+#' @param object
 #'
 #' @return
 #' @export
 #'
 #' @examples
-setMethod("coef", "JD3_TemporalDisaggregation", function(object){
-  if (is.null(object@internal)){
-    NULL
-  }else{
-    proc_vector(object@internal, "c")}
-})
+coef.JDTempDisagg<-function(object){
+  return (object$regression$model$coef)
+}
 
-#' Main output of a temporal disaggregation by regression model
+#' Title
 #'
-#' @param JD3_TemporalDisaggregation
+#' @param object
 #'
 #' @return
 #' @export
 #'
 #' @examples
-setMethod("show", "JD3_TemporalDisaggregation", function(object){
-  if (is.jnull(object@internal)){
+print.JDTempDisagg<-function(object){
+  if (is.null(object$regression$model)){
     cat("Invalid estimation")
   }else{
-    cat("Model", "\n")
-    nx<-proc_numeric(object@internal,"nx")
-    for (i in 1:nx){
-      n<-paste("coeff(", i, ")", sep="")
-      c<-proc_reg(object@internal, n)
-      cat(attr(c, "name"), format(round(c[i], 4), scientific = FALSE), format(round(c[2], 4), scientific = FALSE), format(round(c[1]/c[2], 4), scientific = FALSE), format(round(c[3], 4), scientific = FALSE), "\n")
-    }
+    cat("Model:", object$regression$type, "\n")
+    print(object$regression$model)
   }
-})
+}
 
-#' Detailed output of a temporal disaggregation by regression model
+#' Title
 #'
-#' @param JD3_TemporalDisaggregation
+#' @param object
 #'
 #' @return
 #' @export
 #'
 #' @examples
-setMethod("summary", "JD3_TemporalDisaggregation",
-          function(object){
-            if (is.null(object)){
-              cat("Invalid estimation")
+summary.JDTempDisagg<-function(object){
+  if (is.null(object)){
+    cat("Invalid estimation")
 
-            }else{
-              getItemsLL<- c("Number of observations" = "likelihood.nobs",
-                             "Number of effective observations" = "likelihood.neffective",
-                             "Number of estimated parameters" = "likelihood.nparams",
-                             "Loglikelihood " =	"likelihood.ll",
-                             "Standarderror" = "",
-                             "AIC" = "likelihood.aic",
-                             "AICC"= "likelihood.aicc",
-                             "BICC"= "likelihood.bicc" )
-              cat("\n")
-              cat("Likelihood statistics","\n")
-              cat("\n")
+  }else{
+    getItemsLL<- c("Number of observations" = "likelihood.nobs",
+                   "Number of effective observations" = "likelihood.neffective",
+                   "Number of estimated parameters" = "likelihood.nparams",
+                   "Loglikelihood " =	"likelihood.ll",
+                   "Standarderror" = "",
+                   "AIC" = "likelihood.aic",
+                   "AICC"= "likelihood.aicc",
+                   "BICC"= "likelihood.bicc" )
+    cat("\n")
+    cat("Likelihood statistics","\n")
+    cat("\n")
 
-              for (i in seq_along(getItemsLL)){
-                myItemName <- names(getItemsLL)[i]
-                if (myItemName != "Standarderror"){
-                  myItem <-result(object,getItemsLL[i])
-                } else {
+    for (i in seq_along(getItemsLL)){
+      myItemName <- names(getItemsLL)[i]
+      if (myItemName != "Standarderror"){
+        myItem <-result(object,getItemsLL[i])
+      } else {
 
-                  myItemName <- "Standard error of the regression (ML estimate)"
-                  myItem <-  sqrt(result(object,"likelihood.ssqerr")/result(object,"likelihood.neffective"))
-                }
-                cat(myItemName,myItem,"\n")
-              }
+        myItemName <- "Standard error of the regression (ML estimate)"
+        myItem <-  sqrt(result(object,"likelihood.ssqerr")/result(object,"likelihood.neffective"))
+      }
+      cat(myItemName,myItem,"\n")
+    }
 
-              cat("\n")
-              cat("\n")
-              p<-result(object,"ml.parameters")
-              if (! is.null(p)){
-                cat("Model","\n")
-                cat("\n")
-                cat("Rho :",p,"\n")
-                cat("\n")
-                cat("\n")
-              }
-              cat("Regression model","\n")
-              cat("\n")
+    cat("\n")
+    cat("\n")
+    p<-result(object,"ml.parameters")
+    if (! is.null(p)){
+      cat("Model","\n")
+      cat("\n")
+      cat("Rho :",p,"\n")
+      cat("\n")
+      cat("\n")
+    }
+    cat("Regression model","\n")
+    cat("\n")
 
-              nx<-result(object,"nx")
-              if (nx>0){
-                cur<-"coeff(1)"
-                modelMatrix <- as.double(format(round(result(object,cur),4), scientific=FALSE))
-                if (nx >1){
-                  for (i in 2:nx){
-                    cur<-paste("coeff(", i, ")", sep="")
-                    modelMatrix <- rbind(modelMatrix,as.double(format(round(result(object,cur),4), scientific=FALSE)))
-                  }
-                }
-                dim(modelMatrix)<-c(nx, 3)
+    nx<-result(object,"nx")
+    if (nx>0){
+      cur<-"coeff(1)"
+      modelMatrix <- as.double(format(round(result(object,cur),4), scientific=FALSE))
+      if (nx >1){
+        for (i in 2:nx){
+          cur<-paste("coeff(", i, ")", sep="")
+          modelMatrix <- rbind(modelMatrix,as.double(format(round(result(object,cur),4), scientific=FALSE)))
+        }
+      }
+      dim(modelMatrix)<-c(nx, 3)
 
-                colnames(modelMatrix)<-c("Coefficients","T-stat","P[|T|>t]")
-                rownames(modelMatrix)<-paste("var-",1:nx, sep="")
-                show(modelMatrix)
-              }
-            }
-          }
+      colnames(modelMatrix)<-c("Coefficients","T-stat","P[|T|>t]")
+      rownames(modelMatrix)<-paste("var-",1:nx, sep="")
+      show(modelMatrix)
+    }
+  }
+}
 
-)
+
 
 
 

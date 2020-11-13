@@ -4,8 +4,15 @@
 \alias{jd3_denton2}
 \title{Benchmarking by means of the Denton method without indicator}
 \usage{
-jd3_denton2(nfreq, t, d = 1, mul = TRUE, modified = TRUE,
-  conversion = "Sum", obsposition = 1)
+jd3_denton2(
+  nfreq,
+  t,
+  d = 1,
+  mul = TRUE,
+  modified = TRUE,
+  conversion = "Sum",
+  obsposition = 1
+)
 }
 \arguments{
 \item{t}{Aggregation constraint. Mandatory}

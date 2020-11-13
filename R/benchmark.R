@@ -1,3 +1,6 @@
+#' @include rslts.R
+NULL
+
 #' Benchmarking by means of the Denton method.
 #'
 #' @param s Disaggregated series. Mandatory
@@ -125,7 +128,18 @@ jd3_cholette<-function(s, t, rho=1, lambda=1, bias="None", conversion="Sum", obs
   ts_jd2r(jd_rslt)
 }
 
+#' Title
+#'
+#' @param xlist
+#' @param tcvector
+#' @param ccvector
+#' @param rho
+#' @param lambda
+#'
+#' @return
 #' @export
+#'
+#' @examples
 jd3_mcholette<-function(xlist, tcvector=NULL, ccvector=NULL, rho=1, lambda=1) {
   if(!is.list(xlist) | length(xlist)<3 ) {
     stop("incorrect argument, first argument should be a list of at least 3 time series")}

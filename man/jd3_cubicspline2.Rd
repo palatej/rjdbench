@@ -9,6 +9,9 @@ jd3_cubicspline2(nfreq, t, conversion = "Sum", obsposition = 1)
 \arguments{
 \item{obsposition}{Postion of the observation in the aggregated period (only used with "UserDefined" conversion)}
 }
+\value{
+
+}
 \description{
 Title
 }

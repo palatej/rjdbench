@@ -1,7 +1,7 @@
 Package: rjdbench
 Type: Package
 Title: Some name fot this benchmarking package
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: as.person(c(
     "Jean Palate <jean.palate@nbb.be> [aut,cre]"
       ))
@@ -16,5 +16,11 @@ Imports:
 SystemRequirements: Java SE 8 or higher
 License: EUPL
 LazyData: TRUE
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Encoding: UTF-8
+Collate: 
+    'ts.R'
+    'rslts.R'
+    'benchmark.R'
+    'tempdisagg.R'
+    'zzz.R'
