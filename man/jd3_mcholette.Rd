@@ -2,7 +2,7 @@
 % Please edit documentation in R/benchmark.R
 \name{jd3_mcholette}
 \alias{jd3_mcholette}
-\title{Title}
+\title{Multi-variate Cholette}
 \usage{
 jd3_mcholette(xlist, tcvector = NULL, ccvector = NULL, rho = 1, lambda = 1)
 }
@@ -13,5 +13,5 @@ jd3_mcholette(xlist, tcvector = NULL, ccvector = NULL, rho = 1, lambda = 1)
 
 }
 \description{
-Title
+Multi-variate Cholette
 }

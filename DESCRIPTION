@@ -1,7 +1,7 @@
 Package: rjdbench
 Type: Package
 Title: Some name fot this benchmarking package
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: as.person(c(
     "Jean Palate <jean.palate@nbb.be> [aut,cre]"
       ))

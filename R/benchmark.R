@@ -64,7 +64,7 @@ jd3_grp<-function(s, t, conversion="Sum", obsposition=1, eps=1e-12, iter=500, de
   ts_jd2r(jd_rslt)
 }
 
-#' Title
+#' Benchmarking by means of cubic splines
 #'
 #' @param s
 #' @param t
@@ -83,7 +83,7 @@ jd3_cubicspline<-function(s, t, conversion="Sum", obsposition=1){
   ts_jd2r(jd_rslt)
 }
 
-#' Title
+#' Benchmarking (without indicator) by means of cubic splines
 #'
 #' @param nfreq
 #' @param t
@@ -128,7 +128,7 @@ jd3_cholette<-function(s, t, rho=1, lambda=1, bias="None", conversion="Sum", obs
   ts_jd2r(jd_rslt)
 }
 
-#' Title
+#' Multi-variate Cholette
 #'
 #' @param xlist
 #' @param tcvector

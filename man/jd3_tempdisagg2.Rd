@@ -2,7 +2,7 @@
 % Please edit documentation in R/tempdisagg.R
 \name{jd3_tempdisagg2}
 \alias{jd3_tempdisagg2}
-\title{Title}
+\title{Temporal disaggregation wirhout indicator}
 \usage{
 jd3_tempdisagg2(
   series,
@@ -22,5 +22,5 @@ jd3_tempdisagg2(
 
 }
 \description{
-Title
+Temporal disaggregation wirhout indicator
 }

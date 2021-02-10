@@ -2,9 +2,7 @@
 NULL
 
 
-#' Title
-#'
-#' Temporal disaggregation of a time series
+#' Temporal disaggregation of a time series by regression models. Includes Chow-Lin, Fernandez, Litterman and some variants of those algorithms
 #'
 #' @param series The time series taht will be disaggregated
 #' @param constant Constant term (T/F)
@@ -92,7 +90,7 @@ jd3_tempdisagg<-function(series, constant=T, trend=F, indicators=NULL,
 
 }
 
-#' Title
+#' Temporal disaggregation wirhout indicator
 #'
 #' @param series
 #' @param indicator
@@ -177,59 +175,28 @@ summary.JDTempDisagg<-function(object){
     cat("Invalid estimation")
 
   }else{
-    getItemsLL<- c("Number of observations" = "likelihood.nobs",
-                   "Number of effective observations" = "likelihood.neffective",
-                   "Number of estimated parameters" = "likelihood.nparams",
-                   "Loglikelihood " =	"likelihood.ll",
-                   "Standarderror" = "",
-                   "AIC" = "likelihood.aic",
-                   "AICC"= "likelihood.aicc",
-                   "BICC"= "likelihood.bicc" )
     cat("\n")
     cat("Likelihood statistics","\n")
     cat("\n")
-
-    for (i in seq_along(getItemsLL)){
-      myItemName <- names(getItemsLL)[i]
-      if (myItemName != "Standarderror"){
-        myItem <-result(object,getItemsLL[i])
-      } else {
-
-        myItemName <- "Standard error of the regression (ML estimate)"
-        myItem <-  sqrt(result(object,"likelihood.ssqerr")/result(object,"likelihood.neffective"))
-      }
-      cat(myItemName,myItem,"\n")
-    }
+    cat("Number of observations: ", object$likelihood$nobs, "\n")
+    cat("Number of effective observations: ", object$likelihood$neffective, "\n")
+    cat("Number of estimated parameters: ", object$likelihood$nparams, "\n")
+    cat("Standard error: ", object$likelihood$ser, "\n")
+    cat("AIC: ", object$likelihood$aic, "\n")
+    cat("BIC: ", object$likelihood$bic, "\n")
 
     cat("\n")
     cat("\n")
-    p<-result(object,"ml.parameters")
-    if (! is.null(p)){
-      cat("Model","\n")
-      cat("\n")
-      cat("Rho :",p,"\n")
+    cat("Model:", object$regression$type, "\n")
+    p<-object$estimation$parameter
+    if (! is.nan(p)){
+      cat("Rho :",p," (", object$estimation$eparameter, ")\n")
       cat("\n")
       cat("\n")
     }
     cat("Regression model","\n")
-    cat("\n")
+    print(object$regression$model)
 
-    nx<-result(object,"nx")
-    if (nx>0){
-      cur<-"coeff(1)"
-      modelMatrix <- as.double(format(round(result(object,cur),4), scientific=FALSE))
-      if (nx >1){
-        for (i in 2:nx){
-          cur<-paste("coeff(", i, ")", sep="")
-          modelMatrix <- rbind(modelMatrix,as.double(format(round(result(object,cur),4), scientific=FALSE)))
-        }
-      }
-      dim(modelMatrix)<-c(nx, 3)
-
-      colnames(modelMatrix)<-c("Coefficients","T-stat","P[|T|>t]")
-      rownames(modelMatrix)<-paste("var-",1:nx, sep="")
-      show(modelMatrix)
-    }
   }
 }
 

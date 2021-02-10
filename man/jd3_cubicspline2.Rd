@@ -2,7 +2,7 @@
 % Please edit documentation in R/benchmark.R
 \name{jd3_cubicspline2}
 \alias{jd3_cubicspline2}
-\title{Title}
+\title{Benchmarking (without indicator) by means of cubic splines}
 \usage{
 jd3_cubicspline2(nfreq, t, conversion = "Sum", obsposition = 1)
 }
@@ -13,5 +13,5 @@ jd3_cubicspline2(nfreq, t, conversion = "Sum", obsposition = 1)
 
 }
 \description{
-Title
+Benchmarking (without indicator) by means of cubic splines
 }

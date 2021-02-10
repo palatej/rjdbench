@@ -2,7 +2,7 @@
 % Please edit documentation in R/tempdisagg.R
 \name{jd3_tempdisagg}
 \alias{jd3_tempdisagg}
-\title{Title}
+\title{Temporal disaggregation of a time series by regression models. Includes Chow-Lin, Fernandez, Litterman and some variants of those algorithms}
 \usage{
 jd3_tempdisagg(
   series,
@@ -54,5 +54,5 @@ jd3_tempdisagg(
 
 }
 \description{
-Temporal disaggregation of a time series
+Temporal disaggregation of a time series by regression models. Includes Chow-Lin, Fernandez, Litterman and some variants of those algorithms
 }
